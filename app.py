@@ -1,17 +1,5 @@
 import praw
 import streamlit as st
-import requests
-
-# Function to check if URL is an image or valid image link
-def is_valid_image(url):
-    try:
-        if "i.redd.it" in url or "imgur.com" in url:
-            return True
-        response = requests.head(url)
-        content_type = response.headers.get("content-type")
-        return content_type.startswith("image")
-    except:
-        return False
 
 # Set up Reddit API
 reddit = praw.Reddit(
@@ -21,8 +9,19 @@ reddit = praw.Reddit(
     check_for_async=False
 )
 
+# Function to check if a post has a gallery and extract image URLs
+def get_gallery_images(post):
+    image_urls = []
+    if hasattr(post, "media_metadata"):  # Check if the post has media_metadata (gallery)
+        for item in post.media_metadata.values():
+            # Extract the "s" (source) URL, which is the highest quality
+            image_url = item.get("s", {}).get("u")
+            if image_url:
+                image_urls.append(image_url.replace("&amp;", "&"))  # Fix URL encoding issues
+    return image_urls
+
 # Streamlit app
-st.title("Reddit Image Gallery (Including NSFW)")
+st.title("Reddit Post Gallery Viewer")
 
 subreddit_name = st.text_input("Enter subreddit name:")
 if subreddit_name:
@@ -31,27 +30,19 @@ if subreddit_name:
         subreddit = reddit.subreddit(subreddit_name)
         st.write(f"Showing posts from: r/{subreddit_name}")
 
-        # Create columns for gallery
-        columns = st.columns(3)  # Adjust the number for more/less columns
+        # Fetch the top 10 hot posts
+        for post in subreddit.hot(limit=10):  # Adjust limit as needed
+            st.write(f"Post Title: {post.title}")
 
-        # Initialize the starting point for pagination
-        limit = 10
-        posts = subreddit.hot(limit=limit)
-
-        # Fetch and display images
-        column_index = 0
-        for post in posts:
-            if is_valid_image(post.url):  # Check if the URL is a valid image
-                with columns[column_index]:
-                    st.image(post.url, caption=post.title, use_column_width=True)
-                column_index += 1
-                if column_index >= len(columns):
-                    column_index = 0  # Reset column index to 0 to start a new row
-
-        # Button to load more images
-        if st.button('Load More'):
-            limit += 10  # Increase the limit to show more images
-            st.experimental_rerun()
-
+            # Check if the post has a gallery
+            gallery_images = get_gallery_images(post)
+            if gallery_images:
+                st.write("Gallery Images:")
+                columns = st.columns(len(gallery_images))  # Create columns for the gallery
+                for i, image_url in enumerate(gallery_images):
+                    with columns[i % len(columns)]:  # Arrange images into columns
+                        st.image(image_url, use_column_width=True)
+            else:
+                st.write("This post does not have a gallery.")
     except Exception as e:
         st.error(f"Error fetching subreddit: {e}")
