@@ -15,8 +15,8 @@ def is_valid_image(url):
 
 # Set up Reddit API
 reddit = praw.Reddit(
-    client_id="lCQo5bQ4ITrCIDFnwvApAA",
-    client_secret="0tZuN3EdSsGfJmq58KI5BuL8qtFqTQ",
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
     user_agent="StreamlitRedditApp",
     check_for_async=False
 )
@@ -32,17 +32,26 @@ if subreddit_name:
         st.write(f"Showing posts from: r/{subreddit_name}")
 
         # Create columns for gallery
-        columns = st.columns(4)  # Adjust the number for more/less columns (e.g., 3 for 3 images per row)
+        columns = st.columns(3)  # Adjust the number for more/less columns
 
-        # Fetch top 10 hot posts and display images
+        # Initialize the starting point for pagination
+        limit = 10
+        posts = subreddit.hot(limit=limit)
+
+        # Fetch and display images
         column_index = 0
-        for post in subreddit.hot(limit=10):  # Adjust limit as needed
+        for post in posts:
             if is_valid_image(post.url):  # Check if the URL is a valid image
                 with columns[column_index]:
                     st.image(post.url, caption=post.title, use_column_width=True)
                 column_index += 1
                 if column_index >= len(columns):
                     column_index = 0  # Reset column index to 0 to start a new row
+
+        # Button to load more images
+        if st.button('Load More'):
+            limit += 10  # Increase the limit to show more images
+            st.experimental_rerun()
 
     except Exception as e:
         st.error(f"Error fetching subreddit: {e}")
