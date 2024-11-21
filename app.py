@@ -30,9 +30,14 @@ if subreddit_name:
         st.write(f"Showing posts from: r/{subreddit_name}")
 
         # Fetch top 10 hot posts and display images
-        for post in subreddit.hot(limit=10):  # Adjust limit as needed
-            if is_image(post.url):  # Check if the URL points to an image
+        for post in subreddit.hot(limit=10):
+            st.write(f"Post URL: {post.url}")
+            st.write(f"Is NSFW: {post.over_18}")
+            if is_image(post.url):
                 st.image(post.url, caption=post.title)
+            else:
+                st.write(f"Not an image or unsupported URL: {post.url}")
+
                 
     except Exception as e:
         st.error(f"Error fetching subreddit: {e}")
