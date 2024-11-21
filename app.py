@@ -3,10 +3,13 @@ import streamlit as st
 
 # Connect to Reddit API
 reddit = praw.Reddit(
-    client_id="lCQo5bQ4ITrCIDFnwvApAA",
-    client_secret="0tZuN3EdSsGfJmq58KI5BuL8qtFqTQ",
-    user_agent="ImageFetcherApp"
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
+    user_agent="StreamlitRedditApp",
+    check_for_async=False
 )
+reddit.read_only = False
+reddit.config._allowNSFW = True
 
 # App title
 st.title("Reddit Image Fetcher")
