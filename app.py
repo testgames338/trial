@@ -15,8 +15,8 @@ def is_valid_image(url):
 
 # Set up Reddit API
 reddit = praw.Reddit(
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="lCQo5bQ4ITrCIDFnwvApAA",
+    client_secret="0tZuN3EdSsGfJmq58KI5BuL8qtFqTQ",
     user_agent="StreamlitRedditApp",
     check_for_async=False
 )
