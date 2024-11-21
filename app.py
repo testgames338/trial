@@ -38,10 +38,9 @@ if subreddit_name:
             gallery_images = get_gallery_images(post)
             if gallery_images:
                 #st.write("Gallery Images:")
-                columns = st.columns(len(gallery_images))  # Create columns for the gallery
-                for i, image_url in enumerate(gallery_images):
-                    with columns[i % len(columns)]:  # Arrange images into columns
-                        st.image(image_url, use_column_width=True)
+                #columns = st.columns(len(gallery_images))  # Create columns for the gallery
+                for image_url in gallery_images: # Arrange images into columns
+                        st.image(image_url)
             else:
                 pass
                 #st.write("This post does not have a gallery.")
