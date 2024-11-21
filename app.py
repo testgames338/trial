@@ -32,7 +32,7 @@ if subreddit_name:
         st.write(f"Showing posts from: r/{subreddit_name}")
 
         # Create columns for gallery
-        columns = st.columns(3)  # Adjust the number for more/less columns (e.g., 3 for 3 images per row)
+        columns = st.columns(4)  # Adjust the number for more/less columns (e.g., 3 for 3 images per row)
 
         # Fetch top 10 hot posts and display images
         column_index = 0
