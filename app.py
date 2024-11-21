@@ -1,7 +1,6 @@
 import praw
 import streamlit as st
 import random
-
 # Set up Reddit API
 reddit = praw.Reddit(
     client_id="lCQo5bQ4ITrCIDFnwvApAA",
@@ -21,14 +20,8 @@ def get_gallery_images(post):
                 image_urls.append(image_url.replace("&amp;", "&"))  # Fix URL encoding issues
     return image_urls
 
-# Function to randomize images and persist the random order
-def get_randomized_images(images):
-    if "randomized_images" not in st.session_state:
-        st.session_state.randomized_images = random.sample(images, len(images))
-    return st.session_state.randomized_images
-
 # Streamlit app
-st.title("Reddit Post Gallery Viewer (Randomized Images)")
+st.title("Reddit Post Gallery Viewer")
 
 subreddit_name = st.text_input("Enter subreddit name:")
 if subreddit_name:
@@ -38,20 +31,19 @@ if subreddit_name:
         st.write(f"Showing posts from: r/{subreddit_name}")
 
         # Fetch the top 10 hot posts
-        for post in subreddit.hot(limit=10):  # Adjust limit as needed
-            st.subheader(post.title)
+        for post in subreddit.hot(limit=100):  # Adjust limit as needed
+            #st.write(f"Post Title: {post.title}")
 
             # Check if the post has a gallery
             gallery_images = get_gallery_images(post)
             if gallery_images:
-                # Randomize and persist the order of images
-                randomized_images = get_randomized_images(gallery_images)
-
-                st.write("Gallery Images (Randomized):")
-                for image_url in randomized_images:
-                    # Display each image with a larger size
-                    st.image(image_url, caption=post.title, width=700)  # Set width to 700 pixels
+                randomized_images = random.sample(gallery_images, len(gallery_images))
+                #st.write("Gallery Images:")
+                #columns = st.columns(len(gallery_images))  # Create columns for the gallery
+                for image_url in randomized_images: # Arrange images into columns
+                        st.image(image_url)
             else:
-                st.write("This post does not have a gallery.")
+                pass
+                #st.write("This post does not have a gallery.")
     except Exception as e:
         st.error(f"Error fetching subreddit: {e}")
