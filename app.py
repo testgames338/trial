@@ -37,10 +37,10 @@ if subreddit_name:
             # Check if the post has a gallery
             gallery_images = get_gallery_images(post)
             if gallery_images:
-                random.shuffle(gallery_images)
+                randomized_images = random.sample(gallery_images, len(gallery_images))
                 #st.write("Gallery Images:")
                 #columns = st.columns(len(gallery_images))  # Create columns for the gallery
-                for image_url in gallery_images: # Arrange images into columns
+                for image_url in randomized_images: # Arrange images into columns
                         st.image(image_url)
             else:
                 pass
