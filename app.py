@@ -43,6 +43,7 @@ if subreddit_name:
                     with columns[i % len(columns)]:  # Arrange images into columns
                         st.image(image_url, use_column_width=True)
             else:
+                pass
                 #st.write("This post does not have a gallery.")
     except Exception as e:
         st.error(f"Error fetching subreddit: {e}")
