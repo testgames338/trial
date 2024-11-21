@@ -8,7 +8,7 @@ reddit = praw.Reddit(
     user_agent="StreamlitRedditApp",
     check_for_async=False
 )
-reddit.read_only = False
+#reddit.read_only = False
 reddit.config._allowNSFW = True
 
 # App title
