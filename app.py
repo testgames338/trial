@@ -18,11 +18,7 @@ reddit = praw.Reddit(
     user_agent="StreamlitRedditApp",
     check_for_async=False
 )
-
-# Allow NSFW content in Reddit client
-reddit.read_only = False
 reddit.config._allowNSFW = True
-
 # Streamlit app
 st.title("Reddit Image Viewer (Including NSFW)")
 
