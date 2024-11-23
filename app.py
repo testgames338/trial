@@ -4,7 +4,6 @@ import random
 
 # Set up Reddit API
 reddit = praw.Reddit(
-    client_id="YOUR_CLIENT_ID",
     client_id="lCQo5bQ4ITrCIDFnwvApAA",
     client_secret="0tZuN3EdSsGfJmq58KI5BuL8qtFqTQ",
     check_for_async=False
