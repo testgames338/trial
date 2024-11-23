@@ -48,6 +48,7 @@ if subreddit_name:
                 if post.url.endswith(('.jpg', '.jpeg', '.png', '.gif')):
                     st.image(post.url, caption=post.title, width=700)
                 else:
+                    pass
                     #st.write("This post does not contain displayable images.")
     except Exception as e:
         st.error(f"Error fetching subreddit: {e}")
