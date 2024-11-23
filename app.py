@@ -6,6 +6,7 @@ import random
 reddit = praw.Reddit(
     client_id="lCQo5bQ4ITrCIDFnwvApAA",
     client_secret="0tZuN3EdSsGfJmq58KI5BuL8qtFqTQ",
+    user_agent="StreamlitRedditApp",
     check_for_async=False
 )
 
