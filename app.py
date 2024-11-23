@@ -1,11 +1,12 @@
 import praw
 import streamlit as st
 import random
+
 # Set up Reddit API
 reddit = praw.Reddit(
+    client_id="YOUR_CLIENT_ID",
     client_id="lCQo5bQ4ITrCIDFnwvApAA",
     client_secret="0tZuN3EdSsGfJmq58KI5BuL8qtFqTQ",
-    user_agent="StreamlitRedditApp",
     check_for_async=False
 )
 
@@ -31,19 +32,22 @@ if subreddit_name:
         st.write(f"Showing posts from: r/{subreddit_name}")
 
         # Fetch the top 10 hot posts
-        for post in subreddit.hot(limit=100):  # Adjust limit as needed
-            #st.write(f"Post Title: {post.title}")
+        for post in subreddit.hot(limit=10):  # Adjust limit as needed
+            st.subheader(post.title)
 
-            # Check if the post has a gallery
+            # Extract and display images from the gallery
             gallery_images = get_gallery_images(post)
             if gallery_images:
-                randomized_images = random.sample(gallery_images, len(gallery_images))
-                #st.write("Gallery Images:")
-                #columns = st.columns(len(gallery_images))  # Create columns for the gallery
-                for image_url in randomized_images: # Arrange images into columns
-                        st.image(image_url)
+                st.write("Gallery Images:")
+                # Randomize the images for display
+                random.shuffle(gallery_images)
+                for image_url in gallery_images:
+                    st.image(image_url, caption=post.title, width=700)
             else:
-                pass
-                #st.write("This post does not have a gallery.")
+                # Handle non-gallery posts with single images
+                if post.url.endswith(('.jpg', '.jpeg', '.png', '.gif')):
+                    st.image(post.url, caption=post.title, width=700)
+                else:
+                    st.write("This post does not contain displayable images.")
     except Exception as e:
         st.error(f"Error fetching subreddit: {e}")
