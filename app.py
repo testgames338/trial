@@ -32,13 +32,13 @@ if subreddit_name:
         st.write(f"Showing posts from: r/{subreddit_name}")
 
         # Fetch the top 10 hot posts
-        for post in subreddit.hot(limit=10):  # Adjust limit as needed
-            st.subheader(post.title)
+        for post in subreddit.hot(limit=100):  # Adjust limit as needed
+            #st.subheader(post.title)
 
             # Extract and display images from the gallery
             gallery_images = get_gallery_images(post)
             if gallery_images:
-                st.write("Gallery Images:")
+                #st.write("Gallery Images:")
                 # Randomize the images for display
                 random.shuffle(gallery_images)
                 for image_url in gallery_images:
@@ -48,6 +48,6 @@ if subreddit_name:
                 if post.url.endswith(('.jpg', '.jpeg', '.png', '.gif')):
                     st.image(post.url, caption=post.title, width=700)
                 else:
-                    st.write("This post does not contain displayable images.")
+                    #st.write("This post does not contain displayable images.")
     except Exception as e:
         st.error(f"Error fetching subreddit: {e}")
